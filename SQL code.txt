@@ -1,0 +1,131 @@
+CREATE TABLE Passenger (
+    Passenger_ID INT PRIMARY KEY,
+    Name         VARCHAR(100),
+    Passport_num VARCHAR(20),
+    Email        VARCHAR(100)
+);
+CREATE TABLE Flight (
+    Flight_ID      INT PRIMARY KEY,
+    Airplane_ID    INT,
+    Des_Airport    VARCHAR(100),
+    Or_Airport     VARCHAR(100),
+    Departure_date DATE,
+    Arrival_date   DATE
+);
+CREATE TABLE Transact (
+    Payment_ID     INT PRIMARY KEY,
+    Date           DATE,
+    Payment_method VARCHAR(50),
+    Passenger_ID   INT,
+    FOREIGN KEY (Passenger_ID) REFERENCES Passenger(Passenger_ID)
+);
+
+CREATE TABLE Reservation (
+    Booking_ID     INT PRIMARY KEY,
+    Passenger_name VARCHAR(100),
+    Date           DATE,
+    Destination    VARCHAR(100)
+);
+CREATE TABLE Ticket (
+    Ticket_ID      INT PRIMARY KEY,
+    Passenger_name VARCHAR(100),
+    Seat_num       VARCHAR(10),
+    Class          VARCHAR(20),
+    Flight_ID      INT,
+    FOREIGN KEY (Flight_ID) REFERENCES Flight(Flight_ID)
+);
+
+CREATE TABLE Passenger_Flight (
+    Passenger_ID  INT,
+    Flight_ID     INT,
+    Booking_date  DATE,
+    PRIMARY KEY (Passenger_ID, Flight_ID),
+    FOREIGN KEY (Passenger_ID) REFERENCES Passenger(Passenger_ID),
+    FOREIGN KEY (Flight_ID)    REFERENCES Flight(Flight_ID)
+);
+
+CREATE TABLE Passenger_Reservation (
+    Passenger_ID  INT,
+    Booking_ID    INT,
+    PRIMARY KEY (Passenger_ID, Booking_ID),
+    FOREIGN KEY (Passenger_ID) REFERENCES Passenger(Passenger_ID),
+    FOREIGN KEY (Booking_ID)   REFERENCES Reservation(Booking_ID) );
+    
+CREATE TABLE Reservation_Ticket (
+    Booking_ID  INT,
+    Ticket_ID   INT,
+    PRIMARY KEY (Booking_ID, Ticket_ID),
+    FOREIGN KEY (Booking_ID) REFERENCES Reservation(Booking_ID),
+    FOREIGN KEY (Ticket_ID)  REFERENCES Ticket(Ticket_ID));
+
+INSERT INTO Reservation (Booking_ID, Passenger_name, Date, Destination)
+VALUES
+(201, 'Alice Smith', '2026-03-20', 'Toronto'),
+(202, 'Bob Johnson', '2026-03-21', 'Vancouver'),
+(203, 'Carlos Lopez', '2026-03-22', 'New York'),
+(204, 'Diana Prince', '2026-03-23', 'Los Angeles'),
+(205, 'Ethan Brown', '2026-03-24', 'Chicago');
+
+Select * from Reservation
+INSERT INTO Transact (Payment_ID, Date, Payment_method, Passenger_ID)
+VALUES
+(401, '2026-03-20', 'Credit Card', 1),
+(402, '2026-03-21', 'Debit Card', 2),
+(403, '2026-03-22', 'PayPal', 3),
+(404, '2026-03-23', 'Credit Card', 1),
+(405, '2026-03-24', 'Cash', 2);
+
+SELECT * FROM Transact
+INSERT INTO Ticket (Ticket_ID, Passenger_name, Seat_num, Class, Flight_ID)
+VALUES
+(301, 'Alice Smith', '12A', 'Economy', 101),
+(302, 'Bob Johnson', '5B', 'Business', 102),
+(303, 'Carlos Lopez', '18C', 'Economy', 101),
+(304, 'Diana Prince', '2A', 'First Class', 102),
+(305, 'Ethan Brown', '14D', 'Economy', 101);
+
+SELECT * FROM Ticket
+
+INSERT INTO Flight (Flight_ID, Airplane_ID, Des_Airport, Or_Airport, Departure_date, Arrival_date)
+VALUES
+(101, 1, 'Toronto', 'New York', '2026-04-01', '2026-04-01'),
+(102, 2, 'Vancouver', 'Los Angeles', '2026-04-02', '2026-04-02'),
+(103, 3, 'Quito', 'Spain', '2026-04-01', '2026-04-01'),
+(104, 2, 'China', 'Spain', '2026-04-02', '2026-04-02'),
+(105, 1, 'Miami', 'Italy', '2026-04-01', '2026-04-01'),
+(106, 2, 'Italy', 'Los Angeles', '2026-04-02', '2026-04-02');
+
+SELECT * from Flight
+
+INSERT INTO Passenger (Passenger_ID, Name, Passport_num, Email)
+VALUES 
+(1, 'Alice Smith', 'P123456', 'alice@email.com'),
+(2, 'Bob Johnson', 'P789012', 'bob@email.com'), 
+(3, 'Clarissa Smith', 'P123756', 'clarissa@email.com'),
+(4, 'Rob Johnson', 'P789892', 'rob@email.com');
+
+Select * from Passenger
+
+INSERt INTO Passenger_Reservation (Passenger_ID, Booking_ID) VALUES
+(1, 201),
+(2, 202),
+(3, 203),
+(4, 204),
+(5, 205);
+
+SELECT * FROM Passenger_Reservation
+
+INSERT INTO Reservation_Ticket (Booking_ID, Ticket_ID) VALUES
+(201, 401),
+(202, 402),
+(203, 403),
+(204, 404),
+(205, 405);
+
+INSERT INTO Passenger_Flight (Passenger_ID, Flight_ID, Booking_date) VALUES
+(1, 101, '2026-04-01'),
+(2, 102, '2026-04-03'),
+(3, 103, '2026-04-05'),
+(4, 104, '2026-04-07'),
+(5, 101, '2026-04-10'),
+(6, 103, '2026-04-12');
