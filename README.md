@@ -1,0 +1,1 @@
+For this class project, the application I chose is Airline Reservation Systems. When you book a flight, the system queries a database that contains flight schedules, seat availability, pricing information, and passenger details. 
